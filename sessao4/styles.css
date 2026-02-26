@@ -1,64 +1,160 @@
-/* ============================================
-   CSS VARIABLES — TEMA CLARO (padrão)
-   ============================================ */
+/* ============================================================
+   STYLES.CSS — Portfolio Interativo
+   Sessões 2, 3 e 4
+
+   COMO O CSS FUNCIONA (resumo para iniciantes):
+   ─────────────────────────────────────────────
+   CSS (Cascading Style Sheets) define o aspeto visual do HTML.
+   Cada bloco CSS tem a forma:
+       seletor {
+           propriedade: valor;
+       }
+
+   SELETORES mais comuns:
+     elemento        → aplica a todas as tags desse tipo  (ex: body, nav)
+     .classe         → aplica a elementos com class="..."  (ex: .hero)
+     #id             → aplica ao elemento com id="..."     (ex: #year)
+     elemento:hover  → aplica quando o rato está em cima
+     elemento:focus  → aplica quando o elemento está selecionado (teclado/clique)
+     pai filho       → aplica ao 'filho' dentro do 'pai'   (ex: nav ul a)
+
+   CASCATA E ESPECIFICIDADE:
+     Se duas regras se contradizem, ganha a mais "específica".
+     Ordem de especificidade (crescente):
+       elemento < .classe < #id < style="" inline
+     Se a especificidade for igual, ganha a regra que vem por ÚLTIMO no ficheiro.
+   ============================================================ */
+
+
+/* ============================================================
+   VARIÁVEIS CSS (Custom Properties)
+   ============================================================
+
+   CONCEITO — O que são variáveis CSS?
+   Variáveis CSS guardam valores que se repetem muito (cores, tamanhos).
+   Declaração:  --nome-variavel: valor;
+   Utilização:  color: var(--nome-variavel);
+
+   Vantagem: se quisermos mudar o azul principal, mudamos apenas num
+   sítio (a variável) e o CSS atualiza em toda a página automaticamente.
+
+   :root é um pseudo-elemento especial que representa o elemento
+   raiz do documento (equivale a <html>). Variáveis declaradas aqui
+   ficam disponíveis em TODO o CSS.
+   ============================================================ */
+
+/* Tema claro — valores padrão (usados quando NÃO existe a classe dark-mode) */
 :root {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f3f4f6;
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --accent: #6366f1;
-    --accent-hover: #4f46e5;
-    --border: #e5e7eb;
-    --shadow: rgba(0, 0, 0, 0.08);
+    --bg-primary:   #ffffff;              /* Fundo principal: branco */
+    --bg-secondary: #f3f4f6;              /* Fundo secundário: cinzento muito claro */
+    --text-primary: #1f2937;              /* Texto principal: quase preto */
+    --text-secondary: #6b7280;            /* Texto secundário: cinzento médio */
+    --accent:       #6366f1;              /* Cor de destaque: violeta/índigo */
+    --accent-hover: #4f46e5;              /* Cor de destaque ao hover: violeta mais escuro */
+    --border:       #e5e7eb;              /* Bordas: cinzento claro */
+    --shadow:       rgba(0, 0, 0, 0.08); /* Sombras: preto com 8% de opacidade */
 }
 
-/* ============================================
-   CSS VARIABLES — TEMA ESCURO
-   ============================================ */
+/* Tema escuro — sobrescreve as variáveis quando o <body> tem a classe "dark-mode".
+   O JavaScript adiciona/remove esta classe ao clicar no botão de tema.
+   Como as variáveis têm o mesmo nome, todos os elementos que usam var(--bg-primary)
+   atualizam automaticamente sem precisar de regras CSS extra para cada elemento. */
 body.dark-mode {
-    --bg-primary: #1f2937;
-    --bg-secondary: #111827;
-    --text-primary: #f9fafb;
-    --text-secondary: #d1d5db;
-    --accent: #818cf8;
-    --accent-hover: #6366f1;
-    --border: #374151;
-    --shadow: rgba(0, 0, 0, 0.3);
+    --bg-primary:   #1f2937;              /* Fundo: azul muito escuro */
+    --bg-secondary: #111827;              /* Fundo secundário: azul-preto */
+    --text-primary: #f9fafb;              /* Texto: quase branco */
+    --text-secondary: #d1d5db;            /* Texto secundário: cinzento claro */
+    --accent:       #818cf8;              /* Destaque: violeta mais claro (mais legível no escuro) */
+    --accent-hover: #6366f1;              /* Destaque hover: violeta médio */
+    --border:       #374151;              /* Bordas: cinzento escuro */
+    --shadow:       rgba(0, 0, 0, 0.3);  /* Sombras mais opacas no escuro */
 }
 
-/* ============================================
+
+/* ============================================================
    RESET & BASE
-   ============================================ */
+   ============================================================
+
+   CONCEITO — Reset CSS:
+   Os browsers aplicam estilos padrão a elementos HTML (margens,
+   paddings, tamanhos de fonte). Estes padrões variam entre browsers.
+   Um reset CSS "apaga" esses estilos para partirmos de uma base
+   consistente em todos os browsers.
+
+   CONCEITO — Box Model (Modelo de Caixa):
+   Por padrão, quando definimos width: 200px, o padding e a border
+   são ADICIONADOS ao tamanho total (um elemento fica maior do que 200px).
+   box-sizing: border-box muda este comportamento: padding e border
+   ficam INCLUÍDOS no tamanho definido.
+   Ex: width: 200px com padding: 20px → o conteúdo interior fica com 160px,
+   mas o elemento continua a ter 200px no total. Muito mais intuitivo!
+
+   * → seletor universal, aplica a TODOS os elementos
+   *::before, *::after → aplica aos pseudo-elementos before e after de todos
+   ============================================================ */
 *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+    margin: 0;              /* Remove todas as margens padrão do browser */
+    padding: 0;             /* Remove todos os paddings padrão do browser */
 }
 
+/* Estilo base do <body> — afeta toda a página */
 body {
+    /* Lista de fontes (fallback): tenta a primeira, se não existir tenta a seguinte */
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
+    background-color: var(--bg-primary);  /* Usa a variável — muda com o tema */
+    color: var(--text-primary);           /* Cor do texto principal */
+    line-height: 1.6;                     /* Espaçamento entre linhas (1.6× o tamanho da fonte) */
+
+    /* CONCEITO — transition:
+       Anima a mudança de valores CSS ao longo do tempo.
+       Sintaxe: transition: propriedade duração timing-function
+         background-color 0.3s ease → a cor de fundo muda em 0.3 segundos
+         com aceleração suave (ease: começa devagar, acelera, termina devagar)
+       Sem transition, a mudança de tema seria instantânea e brusca. */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ============================================
+
+/* ============================================================
    HEADER & NAV
-   ============================================ */
+   ============================================================ */
+
 header {
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); /* Linha fina na base do header */
+
+    /* CONCEITO — position: sticky:
+       O elemento comporta-se normalmente até o utilizador fazer scroll.
+       A partir do ponto definido por "top: 0", fica "colado" no topo
+       da janela enquanto o utilizador continua a fazer scroll.
+       Diferente de position: fixed que retira o elemento do fluxo normal. */
     position: sticky;
-    top: 0;
+    top: 0; /* Cola no topo da janela ao fazer scroll */
+
+    /* CONCEITO — z-index:
+       Controla a "profundidade" do elemento (qual fica em cima de qual).
+       Valores maiores ficam na frente. Só funciona com position != static.
+       z-index: 100 garante que o header fica em cima do conteúdo ao fazer scroll. */
     z-index: 100;
+
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 nav {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 1rem 2rem;
+    max-width: 1100px;  /* Largura máxima (não expande infinitamente em ecrãs grandes) */
+    margin: 0 auto;     /* Centra horizontalmente: 0 em cima/baixo, auto nas laterais */
+    padding: 1rem 2rem; /* 1rem cima/baixo, 2rem esquerda/direita */
+
+    /* CONCEITO — Flexbox:
+       display: flex transforma o elemento num "container flexível".
+       Os seus filhos diretos tornam-se "flex items" que se organizam
+       automaticamente numa linha (por padrão).
+
+       justify-content: space-between → empurra os filhos para as extremidades
+         (o h1 vai para a esquerda, o ul vai para a direita)
+       align-items: center → alinha os filhos verticalmente ao centro
+       gap: 1rem → espaço entre os filhos */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,72 +162,96 @@ nav {
 }
 
 nav h1 {
-    font-size: 1.4rem;
-    color: var(--accent);
+    font-size: 1.4rem;       /* rem = relativo ao tamanho base da página (normalmente 16px) */
+    color: var(--accent);    /* Nome do portfolio na cor de destaque */
 }
 
 nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
+    list-style: none; /* Remove os pontos/números das listas */
+    display: flex;    /* Links da navegação em linha */
+    gap: 2rem;        /* Espaço entre cada link */
 }
 
 nav ul a {
-    text-decoration: none;
+    text-decoration: none;       /* Remove o sublinhado padrão dos links */
     color: var(--text-primary);
-    font-weight: 500;
-    transition: color 0.2s ease;
+    font-weight: 500;            /* Espessura média (400=normal, 700=bold) */
+    transition: color 0.2s ease; /* Animação suave na mudança de cor */
 }
 
+/* CONCEITO — Pseudo-classe :hover:
+   Aplica estilos quando o rato está em cima do elemento.
+   Não precisa de JavaScript para criar efeitos de hover. */
 nav ul a:hover {
-    color: var(--accent);
+    color: var(--accent); /* Muda a cor do link ao passar o rato */
 }
 
-/* ============================================
-   HERO
-   ============================================ */
+
+/* ============================================================
+   HERO (secção de apresentação)
+   ============================================================ */
 .hero {
     text-align: center;
-    padding: 5rem 2rem;
+    padding: 5rem 2rem; /* Muito espaço interno para um aspeto "arejado" */
+
+    /* CONCEITO — linear-gradient:
+       Cria um gradiente de cor como fundo (em vez de uma cor sólida).
+       linear-gradient(direção, cor1 posição, cor2 posição)
+       135deg → diagonal (canto sup-esq para inf-dir)
+       O gradiente vai de --bg-secondary (cima-esq) para --bg-primary (baixo-dir) */
     background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     border-bottom: 1px solid var(--border);
     transition: background 0.3s ease;
 }
 
 .hero h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.75rem;
+    font-size: 2.5rem;       /* Título grande */
+    margin-bottom: 0.75rem;  /* Espaço entre o título e o parágrafo */
 }
 
 .hero p {
     font-size: 1.1rem;
-    color: var(--text-secondary);
+    color: var(--text-secondary); /* Texto de subtítulo em cinzento */
 }
 
-/* ============================================
+
+/* ============================================================
    SECTIONS — LAYOUT GERAL
-   ============================================ */
+   ============================================================ */
+
+/* Aplica a TODAS as <section> da página */
 section {
-    max-width: 1100px;
-    margin: 0 auto;
+    max-width: 1100px; /* Limita a largura máxima */
+    margin: 0 auto;    /* Centra na página */
     padding: 4rem 2rem;
 }
 
+/* Títulos h2 dentro de qualquer section */
 section h2 {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
+
+    /* Linha de destaque abaixo do título usando border-bottom */
     border-bottom: 2px solid var(--accent);
+
+    /* CONCEITO — display: inline-block:
+       Por padrão, h2 é display: block (ocupa toda a largura).
+       inline-block faz com que o elemento só ocupe a largura do seu conteúdo.
+       Assim, a border-bottom fica apenas por baixo do texto do título,
+       não por toda a largura da página. */
     display: inline-block;
 }
 
-/* ============================================
+
+/* ============================================================
    ATIVIDADE 2: RELÓGIO DIGITAL
-   ============================================ */
+   ============================================================ */
+
 .clock-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* Empilha os filhos verticalmente (em vez de linha) */
+    align-items: center;    /* Centra os filhos horizontalmente */
     gap: 1rem;
     margin: 2.5rem 0;
 }
@@ -139,37 +259,52 @@ section h2 {
 .date {
     font-size: 0.95rem;
     color: var(--text-secondary);
-    text-transform: capitalize;
-    letter-spacing: 0.03em;
+    text-transform: capitalize; /* Primeira letra de cada palavra em maiúscula */
+    letter-spacing: 0.03em;     /* Espaçamento extra entre letras (0.03× o tamanho da fonte) */
 }
 
 .clock {
     font-size: 3rem;
-    font-weight: 700;
+    font-weight: 700; /* Negrito */
+
+    /* Fonte monoespaçada: cada dígito ocupa exatamente a mesma largura.
+       Evita que o relógio "salte" ao mudar de 10 para 09 (dígito mais estreito). */
     font-family: 'Courier New', monospace;
+
     background: var(--bg-secondary);
     color: var(--text-primary);
     padding: 1.25rem 2.5rem;
-    border-radius: 16px;
+    border-radius: 16px; /* Cantos arredondados (em px, não muda com a fonte) */
     border: 1px solid var(--border);
+
+    /* CONCEITO — box-shadow:
+       Adiciona uma sombra ao elemento.
+       Sintaxe: box-shadow: offset-x offset-y blur-radius cor
+         0 → sem deslocamento horizontal
+         4px → sombra 4px abaixo
+         20px → raio de desfoque de 20px (sombra difusa)
+         var(--shadow) → cor semitransparente */
     box-shadow: 0 4px 20px var(--shadow);
-    letter-spacing: 0.05em;
+
+    letter-spacing: 0.05em; /* Pequeno espaço extra entre os dígitos */
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Os <span> dentro do relógio (horas, minutos, segundos) */
 .clock span {
-    display: inline-block;
-    min-width: 0.65em;
+    display: inline-block; /* Necessário para min-width funcionar em spans */
+    min-width: 0.65em;     /* Largura mínima: evita que o relógio salte ao mudar de 10→9 */
     text-align: center;
 }
 
+/* Botão para alternar entre 24h e 12h */
 .format-toggle {
     background: var(--accent);
     color: white;
-    border: none;
+    border: none;            /* Remove a borda padrão dos botões */
     padding: 0.5rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
+    border-radius: 25px;     /* Valor grande = cantos completamente arredondados (pílula) */
+    cursor: pointer;         /* Cursor em forma de mão ao passar por cima */
     font-size: 0.85rem;
     font-weight: 600;
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -177,19 +312,21 @@ section h2 {
 
 .format-toggle:hover {
     background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+    transform: translateY(-2px); /* Sobe 2px ao hover — efeito de "levantar" */
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); /* Sombra com cor do accent */
 }
 
-/* ============================================
+
+/* ============================================================
    ATIVIDADE 3: CONTADOR DE VISITAS
-   ============================================ */
+   ============================================================ */
+
 .visit-counter {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     padding: 2rem;
     border-radius: 16px;
-    margin: 1rem 0 2.5rem;
+    margin: 1rem 0 2.5rem; /* top: 1rem, laterais: 0, bottom: 2.5rem */
     text-align: center;
     box-shadow: 0 4px 20px var(--shadow);
     transition: background-color 0.3s ease, border-color 0.3s ease;
@@ -200,19 +337,26 @@ section h2 {
     font-size: 1.05rem;
 }
 
+/* O número de visitas dentro do <strong> */
 .visit-counter strong {
     color: var(--accent);
-    font-size: 1.4rem;
+    font-size: 1.4rem; /* Maior que o texto à volta para destaque visual */
 }
 
 .last-visit {
     color: var(--text-secondary);
+    /* CONCEITO — !important:
+       Força esta regra a ganhar sobre qualquer outra, independentemente
+       da especificidade. Usar com moderação — só em casos mesmo necessários.
+       Aqui serve para garantir que o font-size não é sobrescrito pela
+       regra mais genérica .visit-counter p acima. */
     font-size: 0.9rem !important;
 }
 
+/* Botão de reset do contador */
 .reset-btn {
     margin-top: 1rem;
-    background: #ef4444;
+    background: #ef4444; /* Vermelho direto (não usa variável — é sempre vermelho) */
     color: white;
     border: none;
     padding: 0.5rem 1.5rem;
@@ -224,21 +368,30 @@ section h2 {
 }
 
 .reset-btn:hover {
-    background: #dc2626;
+    background: #dc2626; /* Vermelho mais escuro ao hover */
     transform: translateY(-2px);
 }
 
-/* ============================================
-   PROJETOS
-   ============================================ */
+
+/* ============================================================
+   PROJETOS — estilos base (simples, para sessões anteriores)
+   Estes estilos são sobrescritos pelo bloco mais completo da Sessão 3.
+   ============================================================ */
+
+/* CONCEITO — CSS Grid (grade/grelha):
+   display: grid cria uma grelha de linhas e colunas.
+   grid-template-columns define as colunas.
+   repeat(auto-fill, minmax(280px, 1fr)):
+     auto-fill → cria tantas colunas quanto caberem
+     minmax(280px, 1fr) → cada coluna tem pelo menos 280px e no máximo 1fr
+     1fr = "1 fração" do espaço disponível → as colunas dividem o espaço igualmente
+   Resultado: grelha responsiva que ajusta o número de colunas automaticamente. */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 1.5rem;   /* Espaço entre células da grelha */
     margin-top: 1rem;
 }
-
-/* project-card base — overridden by Session 3 block below */
 
 .project-card h3 {
     margin-bottom: 0.5rem;
@@ -250,52 +403,70 @@ section h2 {
     font-size: 0.95rem;
 }
 
-/* ============================================
+
+/* ============================================================
    CONTACTO
-   ============================================ */
+   ============================================================ */
+
 .contact p {
     color: var(--text-secondary);
 }
 
-/* ============================================
+
+/* ============================================================
    FOOTER
-   ============================================ */
+   ============================================================ */
+
 footer {
     text-align: center;
     padding: 2rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border); /* Linha fina no topo do footer */
     color: var(--text-secondary);
     font-size: 0.9rem;
     transition: border-color 0.3s ease;
 }
 
-/* ============================================
-   ATIVIDADE 1: BOTÃO DARK/LIGHT MODE
-   ============================================ */
+
+/* ============================================================
+   ATIVIDADE 1: BOTÃO DARK/LIGHT MODE (flutuante)
+   ============================================================ */
+
 .theme-toggle {
+    /* CONCEITO — position: fixed:
+       O elemento fica fixo na janela do browser — não se mexe ao fazer scroll.
+       As coordenadas são relativas à janela (viewport), não à página.
+       bottom: 2rem → 2rem acima do fundo da janela
+       right: 2rem  → 2rem à esquerda do lado direito da janela */
     position: fixed;
     bottom: 2rem;
     right: 2rem;
+
     background: var(--bg-secondary);
     border: 2px solid var(--border);
-    border-radius: 50%;
+    border-radius: 50%; /* 50% = círculo perfeito (funciona porque width = height) */
     width: 54px;
     height: 54px;
     cursor: pointer;
     font-size: 1.4rem;
     box-shadow: 0 4px 16px var(--shadow);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
-    z-index: 200;
+    z-index: 200; /* Acima do header (z-index: 100) para não ficar tapado */
 }
 
 .theme-toggle:hover {
-    transform: scale(1.12);
+    transform: scale(1.12); /* Cresce 12% ao hover — efeito de "pulse" */
     box-shadow: 0 6px 20px var(--shadow);
 }
 
-/* Posicionamento dos ícones dentro do botão */
+/* Os ícones ☀️ e 🌙 dentro do botão */
 .icon-light,
 .icon-dark {
+    /* CONCEITO — position: absolute:
+       Posiciona o elemento relativamente ao ancestral com position != static
+       (neste caso, o .theme-toggle que tem position: fixed).
+       top: 50% + left: 50% coloca o canto superior-esquerdo no centro.
+       transform: translate(-50%, -50%) recua metade da largura/altura do ícone,
+       centrando-o perfeitamente. Este é o padrão clássico de centralização absoluta. */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -304,41 +475,60 @@ footer {
     line-height: 1;
 }
 
-/* Modo claro: mostra sol, esconde lua */
+/* CONCEITO — :not() pseudo-classe:
+   Seleciona elementos que NÃO satisfazem o seletor dentro dos parênteses.
+   body:not(.dark-mode) → o <body> quando NÃO tem a classe dark-mode
+   Ou seja: no modo claro, o ícone da lua fica invisível (opacity: 0) */
 body:not(.dark-mode) .icon-dark {
-    opacity: 0;
+    opacity: 0; /* Esconde a lua no modo claro */
 }
 
-/* Modo escuro: mostra lua, esconde sol */
+/* No modo escuro, o ícone do sol fica invisível */
 body.dark-mode .icon-light {
-    opacity: 0;
+    opacity: 0; /* Esconde o sol no modo escuro */
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* Nota: opacity: 0 esconde visualmente mas mantém o elemento no DOM
+   (espaço ocupado). display: none removeria o espaço também.
+   Usamos opacity para poder animar a transição (transition: opacity). */
+
+
+/* ============================================================
+   RESPONSIVE — Media Queries (ecrãs pequenos)
+   ============================================================
+
+   CONCEITO — @media (Responsive Design):
+   As media queries aplicam regras CSS apenas quando certas condições
+   se verificam. A mais comum é o tamanho do ecrã.
+   @media (max-width: 600px) → aplica apenas se a largura for ≤ 600px
+   Usado para adaptar o layout a telemóveis e tablets.
+
+   "Mobile-first" seria escrever os estilos base para mobile e usar
+   min-width nas media queries. Aqui a abordagem é "desktop-first"
+   com max-width para adaptar ao mobile.
+   ============================================================ */
 @media (max-width: 600px) {
     nav {
-        flex-direction: column;
+        flex-direction: column; /* Empilha logo e links verticalmente */
         gap: 0.75rem;
         padding: 1rem;
     }
 
     nav ul {
-        gap: 1rem;
+        gap: 1rem; /* Menos espaço entre links no mobile */
     }
 
     .hero h2 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* Título mais pequeno no mobile */
     }
 
     .clock {
-        font-size: 2rem;
+        font-size: 2rem;        /* Relógio mais pequeno no mobile */
         padding: 1rem 1.5rem;
     }
 
     section {
-        padding: 2.5rem 1.25rem;
+        padding: 2.5rem 1.25rem; /* Menos padding lateral no mobile */
     }
 
     .theme-toggle {
@@ -350,35 +540,47 @@ body.dark-mode .icon-light {
     }
 }
 
+
 /* ============================================================
    SESSÃO 3: GALERIA DINÂMICA DE PROJETOS
    ============================================================ */
 
-/* --- Barra de Controlo --- */
+
+/* --- Barra de Controlo (filtros + pesquisa) --- */
+
 .projects-controls {
     display: flex;
+    /* space-between empurra os filtros para a esquerda e a pesquisa para a direita */
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
+
+    /* CONCEITO — flex-wrap: wrap:
+       Por padrão, flex-items ficam todos numa linha mesmo que não caibam.
+       flex-wrap: wrap permite que "saltem" para a linha seguinte se não houver espaço.
+       Essencial para responsividade sem media queries. */
     flex-wrap: wrap;
 }
 
 .filter-buttons {
     display: flex;
     gap: 0.6rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Os botões de filtro quebram para nova linha em ecrãs estreitos */
 }
 
+/* Estilo base dos botões de filtro */
 .filter-btn {
     padding: 0.55rem 1.2rem;
     border: 2px solid var(--border);
     background: var(--bg-primary);
     color: var(--text-primary);
-    border-radius: 25px;
+    border-radius: 25px; /* Forma de pílula */
     cursor: pointer;
     font-weight: 600;
     font-size: 0.9rem;
+    /* "all" anima TODAS as propriedades que mudarem — mais conveniente
+       quando há vários valores que mudam ao mesmo tempo (hover, active) */
     transition: all 0.25s ease;
 }
 
@@ -388,40 +590,56 @@ body.dark-mode .icon-light {
     transform: translateY(-2px);
 }
 
+/* Botão ativo (categoria selecionada) — fundo preenchido */
 .filter-btn.active {
     background: var(--accent);
     color: white;
     border-color: var(--accent);
 }
 
+/* Contador numérico dentro de cada botão (ex: "Web 3") */
 .filter-btn .count {
+    /* rgba(0, 0, 0, 0.12) = preto com 12% de opacidade
+       Funciona bem tanto sobre fundos claros como escuros */
     background: rgba(0, 0, 0, 0.12);
     padding: 2px 7px;
     border-radius: 10px;
-    font-size: 0.8em;
+    font-size: 0.8em; /* "em" é relativo ao font-size do elemento PAI (0.8 × 0.9rem) */
     margin-left: 4px;
 }
 
+/* Quando o botão está ativo, o contador fica branco semitransparente */
 .filter-btn.active .count {
     background: rgba(255, 255, 255, 0.25);
 }
 
+
 /* --- Barra de Pesquisa --- */
+
 .search-box {
+    /* position: relative é necessário para que o ícone dentro (::before)
+       se posicione relativamente a este container e não à página */
     position: relative;
 }
 
+/* CONCEITO — ::before (pseudo-elemento):
+   Cria um elemento visual "antes" do conteúdo real do elemento,
+   sem precisar de HTML adicional. Requer a propriedade "content".
+   Aqui usamos para colocar o ícone 🔍 dentro da barra de pesquisa
+   sem o colocar no HTML.
+   pointer-events: none → o ícone não interfere com cliques no input */
 .search-box::before {
     content: '🔍';
-    position: absolute;
+    position: absolute; /* Posiciona relativamente ao .search-box */
     left: 14px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%); /* Centra verticalmente */
     font-size: 1rem;
-    pointer-events: none;
+    pointer-events: none; /* O ícone não "apanha" cliques — o input recebe-os */
 }
 
 .search-box input {
+    /* Padding esquerdo maior (2.6rem) para o texto não ficar atrás do ícone 🔍 */
     padding: 0.6rem 1.2rem 0.6rem 2.6rem;
     border: 2px solid var(--border);
     background: var(--bg-primary);
@@ -432,17 +650,30 @@ body.dark-mode .icon-light {
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* CONCEITO — ::placeholder:
+   Estiliza o texto de placeholder (texto cinzento antes de escrever).
+   Por padrão é cinzento, mas podemos personalizar. */
 .search-box input::placeholder {
     color: var(--text-secondary);
 }
 
+/* CONCEITO — :focus:
+   Aplica quando o elemento está ativo/selecionado (clique ou Tab).
+   outline: none remove o anel de foco padrão do browser.
+   IMPORTANTE: sempre substituir por outro indicador visual de foco
+   (como o box-shadow abaixo) por razões de acessibilidade.
+   box-shadow: 0 0 0 3px ... cria um "anel" visual sem ocupar espaço. */
 .search-box input:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); /* Anel de foco suave */
 }
 
-/* --- Grid de Projetos --- */
+
+/* --- Grid de Projetos (Sessão 3 — sobrescreve o grid base) --- */
+
+/* Esta regra aparece mais abaixo no ficheiro, por isso sobrescreve
+   a .projects-grid definida mais acima (colunas maiores: 300px vs 280px) */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -450,32 +681,45 @@ body.dark-mode .icon-light {
     margin-top: 0.5rem;
 }
 
+
 /* --- Card de Projeto --- */
+
 .project-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 16px;
+
+    /* overflow: hidden faz com que o conteúdo interior (ex: a imagem)
+       não ultrapasse os cantos arredondados do card */
     overflow: hidden;
-    cursor: pointer;
+
+    cursor: pointer; /* Indica que o card é clicável */
     transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.3s ease;
 }
 
 .project-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-6px); /* Sobe 6px — efeito de "levantar" o card */
+    /* Sombra colorida (usa cor do accent) para um aspeto mais moderno */
     box-shadow: 0 12px 32px rgba(99, 102, 241, 0.18);
 }
 
 .project-card img {
-    width: 100%;
-    height: 190px;
+    width: 100%;    /* Imagem ocupa toda a largura do card */
+    height: 190px;  /* Altura fixa para todas as imagens */
+
+    /* object-fit: cover — a imagem mantém as proporções e é recortada
+       para preencher o espaço definido (como "background-size: cover").
+       Sem isto, imagens de tamanhos diferentes ficariam deformadas. */
     object-fit: cover;
-    display: block;
+
+    display: block; /* Remove o espaço extra que as imagens têm por padrão (são inline) */
 }
 
 .project-card-body {
-    padding: 1.25rem;
+    padding: 1.25rem; /* Espaço interno do texto do card */
 }
 
+/* Etiqueta da categoria (ex: "WEB", "DESIGN") */
 .project-category {
     display: inline-block;
     background: var(--accent);
@@ -484,8 +728,8 @@ body.dark-mode .icon-light {
     border-radius: 12px;
     font-size: 0.78rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    text-transform: uppercase;  /* Converte o texto para MAIÚSCULAS via CSS */
+    letter-spacing: 0.04em;     /* Espaçamento extra entre letras (comum em texto uppercase) */
     margin-bottom: 0.6rem;
 }
 
@@ -502,12 +746,14 @@ body.dark-mode .icon-light {
     line-height: 1.5;
 }
 
+/* Container das tags de tecnologia */
 .project-tags {
     display: flex;
     gap: 0.4rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* As tags quebram para linha nova se não couberem */
 }
 
+/* Cada tag individual (ex: "HTML", "CSS") */
 .tag {
     background: var(--bg-primary);
     border: 1px solid var(--border);
@@ -518,66 +764,103 @@ body.dark-mode .icon-light {
 }
 
 
+/* --- Mensagem "sem resultados" --- */
 
-/* --- Sem Resultados --- */
 .no-results {
     text-align: center;
     padding: 4rem 1rem;
     color: var(--text-secondary);
     font-size: 1.1rem;
+
+    /* CONCEITO — animation:
+       Aplica uma animação definida com @keyframes.
+       Sintaxe: animation: nome duração timing-function
+       A animação corre uma vez ao aparecer o elemento. */
     animation: shake 0.5s ease;
 }
 
+/* CONCEITO — @keyframes:
+   Define os passos de uma animação CSS.
+   "from" e "to" são atalhos para 0% e 100%.
+   Podemos definir estados intermédios (25%, 75%, etc.).
+   Esta animação move o elemento da esquerda para a direita (shake). */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25%       { transform: translateX(-8px); }
-    75%       { transform: translateX(8px); }
+    0%, 100% { transform: translateX(0);    /* Posição normal */ }
+    25%       { transform: translateX(-8px); /* Move para a esquerda */ }
+    75%       { transform: translateX(8px);  /* Move para a direita */ }
 }
 
-/* --- Modal Overlay --- */
+
+/* --- Modal (janela de detalhes) --- */
+
+/* Estado inicial: modal escondido */
 .modal {
-    display: none;
+    display: none; /* Escondido por padrão */
+
+    /* position: fixed cobre toda a janela do browser */
     position: fixed;
+
+    /* CONCEITO — z-index: 500:
+       Mais alto que o header (100) e os botões flutuantes (200),
+       garantindo que o modal fica sempre em cima de tudo. */
     z-index: 500;
+
+    /* CONCEITO — inset: 0:
+       Atalho para top: 0; right: 0; bottom: 0; left: 0.
+       O elemento cobre toda a janela do browser. */
     inset: 0;
+
+    /* Fundo semitransparente escuro (overlay) */
     background: rgba(0, 0, 0, 0.75);
+
+    /* backdrop-filter: aplica efeitos visuais ao conteúdo ATRÁS do elemento.
+       blur(4px) desfoca a página por baixo do modal. */
     backdrop-filter: blur(4px);
 }
 
+/* Estado ativo: modal visível (classe adicionada pelo JavaScript) */
 .modal.active {
+    /* Muda de display: none para display: flex para mostrar o modal */
     display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.25s ease;
+    align-items: center;     /* Centra verticalmente o conteúdo */
+    justify-content: center; /* Centra horizontalmente o conteúdo */
+    animation: fadeIn 0.25s ease; /* Aparece com fade-in */
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from { opacity: 0; } /* Começa invisível */
+    to   { opacity: 1; } /* Termina visível */
 }
 
-/* --- Modal Content --- */
+/* Caixa branca do conteúdo do modal */
 .modal-content {
     background: var(--bg-primary);
     color: var(--text-primary);
     padding: 2.5rem;
     border-radius: 20px;
-    max-width: 780px;
-    width: 92%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
+    max-width: 780px;  /* Largura máxima */
+    width: 92%;        /* Em ecrãs pequenos, ocupa 92% da largura */
+
+    /* max-height + overflow-y: se o conteúdo for muito alto,
+       aparece uma barra de scroll dentro do modal em vez de
+       o modal sair fora do ecrã */
+    max-height: 90vh;  /* vh = viewport height (% da altura da janela) */
+    overflow-y: auto;  /* Scroll vertical quando necessário */
+
+    position: relative; /* Necessário para o botão × se posicionar dentro */
     animation: slideUp 0.35s ease;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
 }
 
+/* O modal sobe ao aparecer (entra de baixo para cima) */
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(40px); } /* 40px abaixo + invisível */
+    to   { opacity: 1; transform: translateY(0); }    /* Posição normal + visível */
 }
 
+/* Botão × para fechar o modal */
 .modal-close {
-    position: absolute;
+    position: absolute; /* Posicionado no canto do .modal-content */
     right: 1.25rem;
     top: 1.25rem;
     font-size: 2rem;
@@ -589,17 +872,17 @@ body.dark-mode .icon-light {
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 50%; /* Botão circular */
     transition: all 0.2s ease;
 }
 
 .modal-close:hover {
     background: #ef4444;
     color: white;
-    transform: rotate(90deg);
+    transform: rotate(90deg); /* Roda 90° ao hover — efeito visual interessante */
 }
 
-/* --- Modal Body Content --- */
+/* Etiqueta da categoria no modal */
 .modal-category {
     display: inline-block;
     background: var(--accent);
@@ -613,61 +896,74 @@ body.dark-mode .icon-light {
     margin-bottom: 0.75rem;
 }
 
+/* Título do projeto no modal */
 #modal-body h2 {
     font-size: 1.75rem;
     margin-bottom: 1.25rem;
     color: var(--text-primary);
 }
 
+/* Imagem do projeto no modal */
 .modal-image {
     width: 100%;
     border-radius: 12px;
     margin-bottom: 1.75rem;
-    display: block;
+    display: block; /* Remove espaço extra das imagens inline */
 }
 
+/* Secções "Sobre o Projeto", "Funcionalidades", "Tecnologias" */
 .modal-section {
     margin: 1.5rem 0;
 }
 
+/* Títulos das secções com faixa colorida à esquerda */
 .modal-section h3 {
     color: var(--text-primary);
     margin-bottom: 0.75rem;
     padding-left: 0.9rem;
+    /* Linha colorida à esquerda — técnica comum para destacar títulos */
     border-left: 4px solid var(--accent);
     font-size: 1rem;
 }
 
 .modal-section p {
     color: var(--text-secondary);
-    line-height: 1.7;
+    line-height: 1.7; /* Mais espaço entre linhas para facilitar leitura */
 }
 
+/* Lista de funcionalidades (sem bullets padrão) */
 .modal-section ul {
-    list-style: none;
+    list-style: none; /* Remove os • padrão */
     padding: 0;
 }
 
+/* Cada item da lista com ✓ personalizado */
 .modal-section ul li {
-    padding: 0.4rem 0 0.4rem 1.6rem;
-    position: relative;
+    padding: 0.4rem 0 0.4rem 1.6rem; /* Padding esquerdo para o ✓ não sobrepor o texto */
+    position: relative; /* Necessário para o ::before se posicionar aqui */
     color: var(--text-secondary);
 }
 
+/* CONCEITO — ::before com position: absolute:
+   Cria o símbolo ✓ antes de cada item da lista.
+   position: absolute posiciona-o relativamente ao li (que tem position: relative).
+   left: 0 coloca-o no início do padding esquerdo que definimos no li. */
 .modal-section ul li::before {
-    content: '✓';
+    content: '✓'; /* Símbolo a mostrar (obrigatório em pseudo-elementos) */
     position: absolute;
     left: 0;
     color: var(--accent);
     font-weight: 700;
 }
 
+/* Container das badges de tecnologia */
 .modal-tech {
     display: flex;
     gap: 0.6rem;
     flex-wrap: wrap;
 }
 
+/* Cada badge de tecnologia */
 .tech-badge {
     background: var(--accent);
     color: white;
@@ -677,13 +973,14 @@ body.dark-mode .icon-light {
     font-weight: 500;
 }
 
+/* Botão "Ver Projeto Completo" no modal */
 .modal-link {
-    display: inline-block;
+    display: inline-block; /* Necessário para padding e margin funcionarem num <a> */
     background: var(--accent);
     color: white;
     padding: 0.7rem 1.75rem;
     border-radius: 25px;
-    text-decoration: none;
+    text-decoration: none; /* Remove sublinhado dos links */
     margin-top: 1.5rem;
     font-weight: 600;
     transition: all 0.25s ease;
@@ -695,23 +992,24 @@ body.dark-mode .icon-light {
     box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
 }
 
-/* --- Responsive Session 3 --- */
+/* Responsivo — Sessão 3 */
 @media (max-width: 600px) {
+    /* Filtros e pesquisa em coluna (um por linha) */
     .projects-controls {
         flex-direction: column;
-        align-items: stretch;
+        align-items: stretch; /* Os filhos ocupam toda a largura disponível */
     }
 
     .search-box input {
-        width: 100%;
+        width: 100%; /* Campo de pesquisa ocupa toda a largura no mobile */
     }
 
     .modal-content {
-        padding: 1.5rem;
+        padding: 1.5rem; /* Menos padding no modal em mobile */
     }
 
     #modal-body h2 {
-        font-size: 1.3rem;
+        font-size: 1.3rem; /* Título mais pequeno no modal em mobile */
     }
 }
 
@@ -720,11 +1018,15 @@ body.dark-mode .icon-light {
    SESSÃO 4: FORMULÁRIO DE CONTACTO & VALIDAÇÃO
    ============================================================ */
 
-/* --- Section Header --- */
+
+/* --- Cabeçalho da secção de contacto --- */
+
 .section-header {
     text-align: center;
     margin-bottom: 3rem;
     max-width: 1100px;
+    /* margin: 0 auto é dividido em 3 declarações separadas para não
+       sobrescrever o margin-bottom acima (shorthand sobrescreveria tudo) */
     margin-left: auto;
     margin-right: auto;
 }
@@ -740,22 +1042,27 @@ body.dark-mode .icon-light {
     font-size: 1.05rem;
 }
 
-/* --- Contact Section --- */
+/* A section de contacto tem mais padding que as outras (5rem vs 4rem) */
 .contact {
     padding: 5rem 2rem;
 }
 
-/* --- Contact Layout --- */
+/* Layout de 2 colunas: formulário (maior) + info de contacto (menor) */
 .contact-container {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
+    /* 1.5fr + 1fr = o formulário ocupa 60% e a info 40% do espaço */
     grid-template-columns: 1.5fr 1fr;
     gap: 3rem;
+    /* align-items: start — os dois painéis alinham pelo topo,
+       não esticam para a mesma altura (comportamento padrão: stretch) */
     align-items: start;
 }
 
-/* --- Form Card --- */
+
+/* --- Cartão do formulário --- */
+
 .contact-form {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -765,112 +1072,147 @@ body.dark-mode .icon-light {
     transition: background-color 0.3s ease;
 }
 
-/* --- Form Groups --- */
+
+/* --- Grupos de campos do formulário --- */
+
+/* Um form-group agrupa: label + input/select/textarea + mensagem de erro */
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem; /* Espaço entre campos */
 }
 
+/* Labels dos campos */
 .form-group label {
-    display: block;
+    display: block; /* Ocupa linha própria (labels são inline por padrão) */
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: var(--text-primary);
     font-size: 0.95rem;
 }
 
+/* Asterisco vermelho nos campos obrigatórios */
 .required {
     color: #ef4444;
 }
 
+/* Wrapper relativo para posicionar o ícone de validação (✓/✗) */
 .input-wrapper {
     position: relative;
 }
 
+/* Estilo base para todos os campos de input, select e textarea */
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
+    /* Padding direito maior (2.8rem) para o texto não ficar atrás do ícone de validação */
     padding: 0.8rem 2.8rem 0.8rem 1rem;
     border: 2px solid var(--border);
     border-radius: 10px;
     font-size: 1rem;
+    /* font-family: inherit — por padrão, inputs têm a sua própria fonte do browser.
+       inherit faz herdar a fonte do body, mantendo consistência visual. */
     font-family: inherit;
     background: var(--bg-primary);
     color: var(--text-primary);
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Select: remove native arrow, add custom one */
+/* Select personalizado — remove a seta nativa e adiciona uma personalizada */
 .form-group select {
+    /* appearance: none remove o estilo nativo do browser (seta, etc.)
+       -webkit-appearance: none é o prefixo para Chrome/Safari */
     appearance: none;
     -webkit-appearance: none;
+    /* Adiciona a seta personalizada como imagem de fundo SVG inline
+       (SVG codificado em URL para não precisar de ficheiro externo) */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 2.5rem center;
-    padding-right: 4rem;
+    background-position: right 2.5rem center; /* Posiciona a seta à direita */
+    padding-right: 4rem; /* Espaço para a seta não sobrepor o texto */
     cursor: pointer;
 }
 
 .form-group textarea {
-    resize: vertical;
+    resize: vertical; /* Só permite redimensionar verticalmente (não horizontalmente) */
     min-height: 130px;
-    padding-right: 1rem;
+    padding-right: 1rem; /* O ícone de validação fica no topo, não no centro */
 }
 
+/* Estado de foco (campo ativo) */
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    outline: none;                              /* Remove o anel padrão do browser */
+    border-color: var(--accent);               /* Borda colorida ao focar */
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12); /* Anel de foco suave */
 }
 
-/* --- Validation Icons --- */
+
+/* --- Ícones de validação (✓ e ✗) --- */
+
+/* O ícone posiciona-se dentro do .input-wrapper (position: relative) */
 .input-icon {
     position: absolute;
     right: 12px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%); /* Centra verticalmente */
     font-style: normal;
     font-size: 1.1rem;
-    opacity: 0;
+    opacity: 0; /* Invisível por padrão — só aparece após validação */
     transition: opacity 0.25s ease;
-    pointer-events: none;
+    pointer-events: none; /* Não interfere com cliques no input */
 }
 
-/* textarea icon sits at top */
+/* Para textareas, o ícone fica no topo (não no centro, pois o campo é alto) */
 .form-group:has(textarea) .input-icon {
+    /* :has() — pseudo-classe que seleciona o pai que contém o filho indicado.
+       Seleciona o .form-group que tem uma textarea dentro.
+       É uma funcionalidade moderna do CSS (2023+). */
     top: 1rem;
-    transform: none;
+    transform: none; /* Remove o translateY(-50%) do estilo geral */
 }
 
-.form-group.valid .input-icon::before  { content: '✓'; color: #10b981; opacity: 1; }
+/* CONCEITO — ::before em ícones de validação:
+   Insere o símbolo ✓ ou ✗ via CSS (sem precisar de HTML).
+   opacity: 1 aqui porque o elemento pai (.input-icon) tem opacity: 0
+   — as regras abaixo ativam o ícone alterando a opacidade do pai. */
+.form-group.valid   .input-icon::before { content: '✓'; color: #10b981; opacity: 1; }
 .form-group.invalid .input-icon::before { content: '✗'; color: #ef4444; opacity: 1; }
+
+/* Torna o ícone visível quando o form-group tem classe valid ou invalid */
 .form-group.valid   .input-icon,
 .form-group.invalid .input-icon { opacity: 1; }
 
+/* Borda verde para campos válidos */
 .form-group.valid input,
 .form-group.valid select,
 .form-group.valid textarea   { border-color: #10b981; }
 
+/* Borda vermelha para campos inválidos */
 .form-group.invalid input,
 .form-group.invalid select,
 .form-group.invalid textarea { border-color: #ef4444; }
 
-/* --- Error Messages --- */
+
+/* --- Mensagens de erro --- */
+
 .error-message {
-    display: block;
+    display: block; /* Ocupa linha própria */
     color: #ef4444;
     font-size: 0.82rem;
     margin-top: 0.35rem;
-    min-height: 1.1rem;
-    opacity: 0;
-    transition: opacity 0.25s ease;
+    min-height: 1.1rem; /* Altura mínima reservada — evita o layout "saltar"
+                           quando a mensagem aparece/desaparece */
+    opacity: 0; /* Invisível por padrão */
+    transition: opacity 0.25s ease; /* Animação suave ao aparecer */
 }
 
+/* A mensagem de erro só fica visível quando o campo é inválido */
 .form-group.invalid .error-message { opacity: 1; }
 
-/* --- Char Counter --- */
+
+/* --- Contador de caracteres da textarea --- */
+
 .char-counter {
     text-align: right;
     font-size: 0.82rem;
@@ -878,12 +1220,17 @@ body.dark-mode .icon-light {
     margin-top: 0.35rem;
 }
 
+/* Aviso (entre 400 e 500 caracteres) — amarelo */
 .char-counter.warning { color: #f59e0b; }
+
+/* Erro (mais de 500 caracteres) — vermelho */
 .char-counter.error   { color: #ef4444; }
 
-/* --- Submit Button --- */
+
+/* --- Botão de submissão --- */
+
 .submit-btn {
-    width: 100%;
+    width: 100%; /* Ocupa toda a largura do formulário */
     padding: 0.9rem 2rem;
     background: var(--accent);
     color: white;
@@ -900,35 +1247,49 @@ body.dark-mode .icon-light {
     margin-top: 0.5rem;
 }
 
+/* CONCEITO — :not(:disabled):
+   Aplica o hover APENAS quando o botão não está desativado.
+   Evita que o efeito de hover apareça no estado desativado (confuso para o utilizador). */
 .submit-btn:hover:not(:disabled) {
     background: var(--accent-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
 
+/* CONCEITO — :disabled:
+   Aplica quando o atributo HTML disabled está presente.
+   O JavaScript adiciona/remove este atributo via btn.disabled = true/false. */
 .submit-btn:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
+    opacity: 0.55;         /* Reduz a opacidade para aspeto "acinzentado" */
+    cursor: not-allowed;   /* Cursor de "proibido" */
 }
 
+/* Spinner de carregamento (animado) dentro do botão durante o envio.
+   O JavaScript adiciona a classe 'loading' ao botão durante o envio.
+   ::after cria o elemento do spinner via CSS (sem HTML adicional). */
 .submit-btn.loading .btn-text::after {
     content: '';
     display: inline-block;
     width: 11px;
     height: 11px;
-    border: 2px solid rgba(255,255,255,0.5);
+    /* Borda com a parte de cima branca e o resto semitransparente
+       — ao rodar, cria a ilusão de um círculo girando */
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    border-radius: 50%; /* Circular */
+    animation: spin 0.7s linear infinite; /* Roda infinitamente */
     margin-left: 8px;
     vertical-align: middle;
 }
 
+/* Animação de rotação infinita para o spinner */
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to { transform: rotate(360deg); } /* Roda 360° (uma volta completa) */
 }
 
-/* --- Contact Info Card --- */
+
+/* --- Cartão de informação de contacto --- */
+
 .contact-info {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -944,19 +1305,23 @@ body.dark-mode .icon-light {
     font-size: 1.1rem;
 }
 
+/* Cada linha de informação (ícone + texto) */
 .info-item {
     display: flex;
-    align-items: center;
+    align-items: center; /* Ícone e texto alinhados verticalmente */
     gap: 1rem;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 0; /* Espaço vertical entre itens */
+    border-bottom: 1px solid var(--border); /* Linha separadora */
     color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
+/* Remove a borda do último item (não precisa de separador abaixo) */
 .info-item:last-of-type { border-bottom: none; }
+
 .info-icon { font-size: 1.3rem; }
 
+/* Links das redes sociais em linha */
 .social-links {
     display: flex;
     gap: 0.6rem;
@@ -965,7 +1330,7 @@ body.dark-mode .icon-light {
 }
 
 .social-links a {
-    flex: 1;
+    flex: 1; /* Cada link cresce para ocupar espaço igual */
     padding: 0.6rem;
     background: var(--bg-primary);
     border: 1px solid var(--border);
@@ -985,18 +1350,24 @@ body.dark-mode .icon-light {
     transform: translateY(-2px);
 }
 
-/* --- Toast Notifications --- */
+
+/* --- Toast Notifications (notificações temporárias) --- */
+
+/* Container que agrupa todos os toasts ativos */
 .toast-container {
     position: fixed;
     top: 1.25rem;
     right: 1.25rem;
-    z-index: 9999;
+    z-index: 9999; /* Valor muito alto — acima de tudo o resto */
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    /* pointer-events: none no container — os toasts individuais
+       vão ter pointer-events: all para responder a cliques */
     pointer-events: none;
 }
 
+/* Cada toast individual */
 .toast {
     background: var(--bg-primary);
     border: 1px solid var(--border);
@@ -1008,28 +1379,35 @@ body.dark-mode .icon-light {
     gap: 0.9rem;
     min-width: 280px;
     max-width: 380px;
+
+    /* border-left: 4px solid sem cor — a cor é definida pelas classes abaixo.
+       A largura e estilo ficam aqui para evitar repetição. */
     border-left: 4px solid;
-    pointer-events: all;
-    animation: toastIn 0.35s ease;
+
+    pointer-events: all; /* Este elemento responde a cliques (botão fechar) */
+    animation: toastIn 0.35s ease; /* Entra deslizando da direita */
 }
 
+/* Toast entra deslizando da direita (fora do ecrã) para a posição final */
 @keyframes toastIn {
-    from { transform: translateX(120%); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
+    from { transform: translateX(120%); opacity: 0; } /* Fora do ecrã à direita */
+    to   { transform: translateX(0);    opacity: 1; } /* Posição final */
 }
 
+/* Toast sai deslizando para a direita (fora do ecrã) */
 @keyframes toastOut {
     to { transform: translateX(120%); opacity: 0; }
 }
 
-.toast-success { border-left-color: #10b981; }
-.toast-error   { border-left-color: #ef4444; }
-.toast-warning { border-left-color: #f59e0b; }
-.toast-info    { border-left-color: var(--accent); }
+/* Cor da borda esquerda por tipo de toast */
+.toast-success { border-left-color: #10b981; } /* Verde */
+.toast-error   { border-left-color: #ef4444; } /* Vermelho */
+.toast-warning { border-left-color: #f59e0b; } /* Amarelo */
+.toast-info    { border-left-color: var(--accent); } /* Violeta */
 
-.toast-icon { font-size: 1.5rem; flex-shrink: 0; }
+.toast-icon { font-size: 1.5rem; flex-shrink: 0; /* Não encolhe mesmo com pouco espaço */ }
 
-.toast-content { flex: 1; }
+.toast-content { flex: 1; /* Ocupa todo o espaço disponível entre ícone e botão × */ }
 
 .toast-title {
     font-weight: 700;
@@ -1043,6 +1421,7 @@ body.dark-mode .icon-light {
     color: var(--text-secondary);
 }
 
+/* Botão × para fechar o toast */
 .toast-close {
     background: none;
     border: none;
@@ -1064,13 +1443,16 @@ body.dark-mode .icon-light {
     color: var(--text-primary);
 }
 
-/* --- Admin View --- */
+
+/* --- Área de administração (mensagens recebidas) --- */
+
 .admin-messages {
     max-width: 1100px;
     margin: 0 auto;
     padding: 4rem 2rem;
 }
 
+/* Cabeçalho do painel admin: título à esquerda, ações à direita */
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -1090,6 +1472,7 @@ body.dark-mode .icon-light {
 
 .message-count { color: var(--text-secondary); font-size: 0.95rem; }
 
+/* Botão de ação destrutiva (apagar) */
 .btn-danger {
     background: #ef4444;
     color: white;
@@ -1107,12 +1490,14 @@ body.dark-mode .icon-light {
     transform: translateY(-2px);
 }
 
+/* Lista de mensagens em coluna */
 .messages-list {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
 }
 
+/* Card de cada mensagem recebida */
 .message-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -1122,18 +1507,20 @@ body.dark-mode .icon-light {
 }
 
 .message-card:hover {
-    transform: translateX(4px);
+    transform: translateX(4px); /* Move 4px para a direita ao hover (efeito diferente do translateY) */
     box-shadow: 0 6px 20px var(--shadow);
 }
 
+/* Mensagens não lidas têm uma borda esquerda colorida */
 .message-card.unread {
     border-left: 4px solid var(--accent);
 }
 
+/* Cabeçalho do card: remetente à esquerda, data à direita */
 .message-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: flex-start; /* Alinha pelo topo (não pelo centro) */
     margin-bottom: 0.75rem;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -1147,12 +1534,14 @@ body.dark-mode .icon-light {
 
 .message-sender p { color: var(--text-secondary); font-size: 0.85rem; }
 
+/* Data/hora alinhada à direita */
 .message-meta {
     text-align: right;
     font-size: 0.82rem;
     color: var(--text-secondary);
 }
 
+/* Etiqueta do assunto */
 .message-subject {
     display: inline-block;
     background: var(--accent);
@@ -1164,11 +1553,12 @@ body.dark-mode .icon-light {
     margin-bottom: 0.75rem;
 }
 
+/* Corpo da mensagem com fundo diferente para se destacar */
 .message-body {
     color: var(--text-secondary);
     line-height: 1.6;
     font-size: 0.95rem;
-    background: var(--bg-primary);
+    background: var(--bg-primary); /* Fundo ligeiramente diferente do card */
     border: 1px solid var(--border);
     padding: 0.9rem 1rem;
     border-radius: 10px;
@@ -1194,6 +1584,7 @@ body.dark-mode .icon-light {
 
 .message-actions .btn-delete:hover { background: #dc2626; }
 
+/* Mensagem quando não há mensagens guardadas */
 .no-messages {
     text-align: center;
     padding: 4rem 1rem;
@@ -1201,10 +1592,12 @@ body.dark-mode .icon-light {
     font-size: 1.1rem;
 }
 
-/* --- Toggle Admin Button --- */
+
+/* --- Botão flutuante para abrir o painel admin --- */
+
 .toggle-admin {
     position: fixed;
-    bottom: 5.5rem;     /* sit above theme toggle */
+    bottom: 5.5rem; /* Acima do botão de tema (que está a 2rem + 54px ≈ 5.375rem) */
     right: 2rem;
     width: 54px;
     height: 54px;
@@ -1214,7 +1607,7 @@ body.dark-mode .icon-light {
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); /* Sombra colorida */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     z-index: 200;
     display: flex;
@@ -1227,10 +1620,11 @@ body.dark-mode .icon-light {
     box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
 }
 
+/* Badge vermelho com número de mensagens não lidas */
 .toggle-admin .badge {
     position: absolute;
     top: -4px;
-    right: -4px;
+    right: -4px; /* Posicionado no canto superior direito do botão */
     background: #ef4444;
     color: white;
     width: 22px;
@@ -1243,8 +1637,10 @@ body.dark-mode .icon-light {
     justify-content: center;
 }
 
-/* --- Responsive Session 4 --- */
+/* Responsivo — Sessão 4 */
 @media (max-width: 768px) {
+    /* No mobile, o formulário e a info de contacto ficam em coluna
+       (1fr = uma coluna, em vez das duas colunas do desktop) */
     .contact-container {
         grid-template-columns: 1fr;
     }
@@ -1254,6 +1650,7 @@ body.dark-mode .icon-light {
         padding: 1.5rem;
     }
 
+    /* No mobile, os toasts ocupam toda a largura (left + right) */
     .toast-container {
         left: 1rem;
         right: 1rem;
@@ -1263,22 +1660,25 @@ body.dark-mode .icon-light {
 }
 
 
-/* --- Phone field extras --- */
+/* --- Extras do campo de telefone --- */
+
+/* Texto "(opcional)" ao lado do label do telefone */
 .optional {
-    font-weight: 400;
+    font-weight: 400; /* Normal (não negrito, ao contrário do label) */
     font-size: 0.85rem;
     color: var(--text-secondary);
 }
 
+/* Dica de formato abaixo do campo (ex: "Formato: 912345678") */
 .field-hint {
     display: block;
     font-size: 0.8rem;
     color: var(--text-secondary);
     margin-top: 0.3rem;
-    opacity: 0.8;
+    opacity: 0.8; /* Ligeiramente transparente — menos destaque que o label */
 }
 
-/* Phone in admin message card */
+/* Telefone dentro do card de mensagem do admin */
 .msg-phone {
     color: var(--text-secondary);
     font-size: 0.82rem;
