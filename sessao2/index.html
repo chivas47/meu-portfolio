@@ -8,17 +8,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <!-- HEADER -->
     <header>
         <nav>
             <h1>[Teu Nome]</h1>
             <ul>
+                <li><a href="../">Início</a></li>
                 <li><a href="#about">Sobre Mim</a></li>
                 <li><a href="#projects">Projetos</a></li>
                 <li><a href="#contact">Contacto</a></li>
-                <li><a href="sessao2/">Sessão 2</a></li>
-                <li><a href="sessao3/">Sessão 3</a></li>
-                <li><a href="sessao4/">Sessão 4</a></li>
+                <li><a href="../sessao2/">Sessão 2</a></li>
+                <li><a href="../sessao3/">Sessão 3</a></li>
+                <li><a href="../sessao4/">Sessão 4</a></li>
             </ul>
         </nav>
     </header>
@@ -33,14 +35,28 @@
     <section id="about" class="about">
         <h2>Sobre Mim</h2>
         <p>Escreve uma breve descrição sobre ti...</p>
-        <!-- Aqui vão adicionar componentes interativos na próxima aula -->
+
+        <!-- ATIVIDADE 2: RELÓGIO DIGITAL -->
+        <div class="clock-container">
+            <div id="date" class="date"></div>
+            <div class="clock">
+                <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+            </div>
+            <button id="format-toggle" class="format-toggle">12h / 24h</button>
+        </div>
+
+        <!-- ATIVIDADE 3: CONTADOR DE VISITAS -->
+        <div class="visit-counter">
+            <p>👋 Visitaste esta página <strong id="visit-count">0</strong> vezes</p>
+            <p class="last-visit">Última visita: <span id="last-visit">Primeira vez!</span></p>
+            <button id="reset-counter" class="reset-btn">🔄 Reset</button>
+        </div>
     </section>
 
     <!-- PROJETOS -->
     <section id="projects" class="projects">
         <h2>Projetos</h2>
         <div class="projects-grid">
-            <!-- Cards de projetos vão aqui (dinâmicos mais tarde) -->
             <article class="project-card">
                 <h3>Projeto 1</h3>
                 <p>Descrição breve...</p>
@@ -54,26 +70,17 @@
         <p>Em breve terás um formulário aqui!</p>
     </section>
 
-    <!-- SESSÕES -->
-    <section id="sessions" class="sessions">
-        <h2>Sessões</h2>
-        <ul>
-            <li><a href="sessao2/">Sessão 2</a></li>
-            <li><a href="sessao3/">Sessão 3</a></li>
-            <li><a href="sessao4/">Sessão 4</a></li>
-        </ul>
-    </section>
-
     <!-- FOOTER -->
     <footer>
         <p>© <span id="year"></span> [Teu Nome]. Feito com ❤️ e ☕</p>
     </footer>
 
-
+    <!-- ATIVIDADE 1: BOTÃO DARK/LIGHT MODE -->
     <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
-    <span class="icon-light">☀️</span>
-    <span class="icon-dark">🌙</span>
-</button>
+        <span class="icon-light">☀️</span>
+        <span class="icon-dark">🌙</span>
+    </button>
+
     <script src="script.js"></script>
 </body>
 </html>
